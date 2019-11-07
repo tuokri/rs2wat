@@ -13,7 +13,7 @@ import progressbar
 from dateutil import relativedelta
 from logbook import Logger, StreamHandler
 
-import db
+from rs2wat import db
 
 DIR_LISTING_PAT = r"([0-9]{2}-[0-9]{2}-[0-9]{2}\s{2}[0-9]{2}:[0-9]{2}\w{2})\s*(\d*) (.*)"
 DIR_LISTING_TIME_FMT = "%m-%d-%y  %I:%M%p"
