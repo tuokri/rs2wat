@@ -129,7 +129,7 @@ class FTPCollector(object):
         self._send_password(password)
 
     def _load_cached_modifications(self) -> dict:
-        mod_dict = {}
+        mod_dict = db.get_log_cache()
         logger.info("loaded {m} cached modifications", m=len(mod_dict))
         return mod_dict
 
