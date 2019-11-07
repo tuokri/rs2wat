@@ -18,7 +18,7 @@ def init_db(database):
 def insert_log_cache(path: str, open_time: datetime.datetime, bookmark: int):
     cur = CONN.cursor()
     cur.execute("INSERT INTO log_cache (path, open_time, bookmark) "
-                "VALUES (%s, %s, %s)", path, open_time, bookmark)
+                "VALUES (%s, %s, %s)", (path, open_time, bookmark))
     CONN.commit()
     cur.close()
 
@@ -26,7 +26,7 @@ def insert_log_cache(path: str, open_time: datetime.datetime, bookmark: int):
 def update_log_cache(path: str, open_time: datetime.datetime, bookmark: int):
     cur = CONN.cursor()
     cur.execute("UPDATE log_cache SET open_time=(%s), bookmark=(%s) "
-                "WHERE path=(%s)", open_time, bookmark, path)
+                "WHERE path=(%s)", (open_time, bookmark, path))
     CONN.commit()
     cur.close()
 
