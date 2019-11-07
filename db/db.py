@@ -3,12 +3,15 @@ Simple, initial, database API revision.
 """
 
 import datetime
-import os
 
 import psycopg2
 
-DATABASE_URL = os.environ["DATABASE_URL"]
-CONN = psycopg2.connect(DATABASE_URL, sslmode="require")
+CONN = None
+
+
+def init_db(database):
+    global CONN
+    CONN = psycopg2.connect(database, sslmode="require")
 
 
 def insert_log_cache(path: str, open_time: datetime.datetime, bookmark: int):
