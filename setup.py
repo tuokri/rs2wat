@@ -1,10 +1,8 @@
 import setuptools
 
-from rs2wat import __version__
-
 setuptools.setup(
     name="rs2wat",
-    version=__version__,
+    version="0.1.4",
     packages=setuptools.find_packages(),
     url="https://github.com/tuokri/rs2wat",
     author="tuokri",
