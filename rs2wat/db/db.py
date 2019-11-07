@@ -5,6 +5,7 @@ Simple, initial, database API revision.
 import datetime
 
 import psycopg2
+import psycopg2.extras
 
 CONN = None
 
