@@ -33,9 +33,11 @@ def update_log_cache(path: str, open_time: datetime.datetime, bookmark: int):
 
 def get_log_cache() -> dict:
     cur = CONN.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    result = cur.execute("SELECT * FROM log_cache").fetchall()
-    cur.close()
+    result = cur.execute("SELECT * FROM log_cache")
     d = {}
-    for r in result:
-        d[(r["path"], r["open_time"])] = r["bookmark"]
+    if result:
+        result = result.fetchall()
+        for r in result:
+            d[(r["path"], r["open_time"])] = r["bookmark"]
+    cur.close()
     return d

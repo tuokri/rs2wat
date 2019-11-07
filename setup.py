@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="rs2wat",
-    version="0.1.5",
+    version="0.1.6",
     packages=setuptools.find_packages(),
     url="https://github.com/tuokri/rs2wat",
     author="tuokri",
