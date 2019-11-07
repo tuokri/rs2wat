@@ -16,4 +16,11 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+    install_requires=[
+        "Logbook>=1.5.3",
+        "progressbar>=2.5",
+        "psycopg2>=2.8.4",
+        "python-dateutil>=2.8.1",
+        "six>=1.13.0",
+    ]
 )
