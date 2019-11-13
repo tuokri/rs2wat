@@ -220,8 +220,9 @@ class FTPCollector(object):
             try:
                 self._insert_log_cache(path, log_open_time, bookmark_row_idx)
             except Exception as e:
-                logger.error("error saving new logfile to db: {path}: {e},"
-                             "current modifications: {m}", path=path, e=e, m=self._modifications)
+                # logger.error
+                print("error saving new logfile to db: {path}: {e},"
+                      "current modifications: {m}".format(path=path, e=e, m=self._modifications))
                 raise
         else:
             logger.info("logfile: {path} is cached, bookmark: {bmi}", path=path, bmi=bookmark_row_idx)
