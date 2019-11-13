@@ -17,6 +17,7 @@ from rs2wat import db
 
 DIR_LISTING_PAT = r"([0-9]{2}-[0-9]{2}-[0-9]{2}\s{2}[0-9]{2}:[0-9]{2}\w{2})\s*(\d*) (.*)"
 DIR_LISTING_TIME_FMT = "%m-%d-%y  %I:%M%p"
+RS2_LOG_DATE_FMT = "%d/%m/%y %H:%M:%S"
 
 StreamHandler(sys.stdout, level=logging.INFO).push_application()
 logger = Logger(__name__)
@@ -85,8 +86,7 @@ class FTPCollector(object):
         self._ftp.connect(host, port)
         self._login(username, password)
 
-        # Load modifications from cache database.
-        self._modifications = self._load_cached_modifications()
+        self._load_cached_modifications()
 
     def __del__(self):
         try:
@@ -128,10 +128,10 @@ class FTPCollector(object):
         self._send_username(userame)
         self._send_password(password)
 
-    def _load_cached_modifications(self) -> dict:
+    def _load_cached_modifications(self):
         mod_dict = db.get_log_cache()
         logger.info("loaded {m} cached modifications", m=len(mod_dict))
-        return mod_dict
+        self._modifications = mod_dict
 
     def _update_log_cache(self, path: str, open_time: datetime.datetime, bookmark: int):
         db.update_log_cache(path, open_time, bookmark)
@@ -211,16 +211,16 @@ class FTPCollector(object):
         logger.info("got log with {lines} lines", lines=length)
 
         first = log[0].strip()
-        log_open_time = datetime.datetime.strptime(first.split(", ")[1], "%d/%m/%y %H:%M:%S")
+        log_open_time = datetime.datetime.strptime(first.split(", ")[1], RS2_LOG_DATE_FMT)
         logger.info("log open time: {t}", t=log_open_time.isoformat())
 
         bookmark_row_idx = 0
         if (path, log_open_time) not in self._modifications:
-            self._insert_log_cache(path, log_open_time, bookmark_row_idx)
             logger.info("new, non-cached logfile: {path}", path=path)
+            self._insert_log_cache(path, log_open_time, bookmark_row_idx)
         else:
-            bookmark_row_idx = self._modifications[(path, log_open_time)]
             logger.info("logfile: {path} is cached, bookmark: {bmi}", path=path, bmi=bookmark_row_idx)
+            bookmark_row_idx = self._modifications[(path, log_open_time)]
 
         # Last row is discarded because it might be incomplete.
         new_bookmark = length - 1

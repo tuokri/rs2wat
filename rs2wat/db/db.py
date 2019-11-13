@@ -7,6 +7,7 @@ import datetime
 import psycopg2
 import psycopg2.extras
 
+RS2_LOG_DATE_FMT = "%d/%m/%y %H:%M:%S"
 CONN = None
 
 
@@ -38,6 +39,7 @@ def get_log_cache() -> dict:
     if result:
         result = result.fetchall()
         for r in result:
-            d[(r["path"], r["open_time"])] = r["bookmark"]
+            dt = datetime.datetime.strptime(r["open_time"], RS2_LOG_DATE_FMT)
+            d[(r["path"], dt)] = r["bookmark"]
     cur.close()
     return d
