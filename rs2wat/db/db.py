@@ -40,6 +40,6 @@ def get_log_cache() -> dict:
         result = result.fetchall()
         for r in result:
             dt = datetime.datetime.strptime(r["open_time"], RS2_LOG_DATE_FMT)
-            d[(r["path"], dt)] = r["bookmark"]
+            d[(str(r["path"]), dt)] = int(r["bookmark"])
     cur.close()
     return d

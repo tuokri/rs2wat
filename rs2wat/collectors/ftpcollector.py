@@ -217,7 +217,12 @@ class FTPCollector(object):
         bookmark_row_idx = 0
         if (path, log_open_time) not in self._modifications:
             logger.info("new, non-cached logfile: {path}", path=path)
-            self._insert_log_cache(path, log_open_time, bookmark_row_idx)
+            try:
+                self._insert_log_cache(path, log_open_time, bookmark_row_idx)
+            except Exception as e:
+                logger.error("error saving new logfile to db: {path}: {e},"
+                             "current modifications: {m}", path=path, e=e, m=self._modifications)
+                raise
         else:
             logger.info("logfile: {path} is cached, bookmark: {bmi}", path=path, bmi=bookmark_row_idx)
             bookmark_row_idx = self._modifications[(path, log_open_time)]
