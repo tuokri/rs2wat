@@ -1,7 +1,7 @@
 from .collectors import FTPCollector
 from .db import db
 
-__version__ = "0.1.14"
+__version__ = "0.1.15"
 
 __all__ = [
     "__version__",
