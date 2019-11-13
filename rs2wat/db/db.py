@@ -36,10 +36,10 @@ def get_log_cache() -> dict:
     cur = CONN.cursor(cursor_factory=psycopg2.extras.DictCursor)
     result = cur.execute("SELECT * FROM log_cache")
     d = {}
-    if result:
-        result = result.fetchall()
-        for r in result:
-            dt = datetime.datetime.strptime(r["open_time"], RS2_LOG_DATE_FMT)
-            d[(str(r["path"]), dt)] = int(r["bookmark"])
+    result = result.fetchall()
+    for r in result:
+        dt = datetime.datetime.strptime(r["open_time"], RS2_LOG_DATE_FMT)
+        d[(str(r["path"]), dt)] = int(r["bookmark"])
     cur.close()
+    print(d)
     return d
