@@ -83,6 +83,22 @@ def get_ips() -> List[str]:
     return ips
 
 
+def get_ip(ip: str) -> str:
+    cur = CONN.cursor()
+    cur.execute("SELECT * FROM ip WHERE ipv4=(%s)", (ip,))
+    ip = cur.fetchone()
+    cur.close()
+    return ip
+
+
+def get_user(steamid64: int) -> int:
+    cur = CONN.cursor()
+    cur.execute("SELECT * FROM user WHERE steamid64=(%s)", (steamid64,))
+    user = cur.fetchone()
+    cur.close()
+    return user
+
+
 def get_user_ips(steamid64: int) -> List[str]:
     cur = CONN.cursor()
     cur.execute(
