@@ -136,11 +136,16 @@ def get_ip_users(ip: str) -> List[int]:
 def insert_user_ip(ip: str, steamid64: int):
     cur = CONN.cursor()
     cur.execute(
-        "INSERT INTO user_ip (steamid64, ipv4) VALUES "
-        "("
-        "   (SELECT steamid64 from steam_user WHERE steamid64=(%s)),"
-        "   (SELECT ipv4      from ip         WHERE ip=(%s))"
-        ")",
-        (steamid64, ip))
+        "INSERT INTO user_ip (steamid64) "
+        "SELECT steamid64 FROM steam_user"
+        "WHERE steam_user.steamid64=(%s)",
+        (steamid64,)
+    )
+    cur.execute(
+        "INSERT INTO user_ip (ipv4) "
+        "SELECT ipv4 FROM ip"
+        "WHERE ip.ipv4=(%s)",
+        (ip,)
+    )
     CONN.commit()
     cur.close()
