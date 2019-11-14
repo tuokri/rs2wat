@@ -57,7 +57,7 @@ def insert_ip(ip: str):
 def insert_user(steamid64: int):
     cur = CONN.cursor()
     cur.execute(
-        "INSERT INTO user (steamid64) "
+        "INSERT INTO steam_user (steamid64) "
         "VALUES (%s)", (steamid64,))
     CONN.commit()
     cur.close()
@@ -65,7 +65,7 @@ def insert_user(steamid64: int):
 
 def get_users() -> List[int]:
     cur = CONN.cursor()
-    cur.execute("SELECT * FROM user")
+    cur.execute("SELECT * FROM steam_user")
     users = []
     for user in cur:
         users.append(user)
@@ -93,7 +93,7 @@ def get_ip(ip: str) -> str:
 
 def get_user(steamid64: int) -> int:
     cur = CONN.cursor()
-    cur.execute("SELECT * FROM user WHERE steamid64=(%s)", (steamid64,))
+    cur.execute("SELECT * FROM steam_user WHERE steamid64=(%s)", (steamid64,))
     user = cur.fetchone()
     cur.close()
     return user
@@ -137,8 +137,8 @@ def insert_user_ip(ip: str, steamid64: int):
     cur = CONN.cursor()
     cur.execute(
         "INSERT INTO user_ip (steamid64, ipv4) VALUES "
-        "( steamid64, (SELECT steamid64 from user WHERE steamid64=(%s)) ),"
-        "( ipv4,      (SELECT ipv4      from ip   WHERE ip=(%s)) )",
+        "( steamid64, (SELECT steamid64 from steam_user WHERE steamid64=(%s)) ),"
+        "( ipv4,      (SELECT ipv4      from ip         WHERE ip=(%s)) )",
         (steamid64, ip))
     CONN.commit()
     cur.close()
