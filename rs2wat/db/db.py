@@ -3,6 +3,7 @@ Simple, initial, database API revision.
 """
 
 import datetime
+from collections import defaultdict
 from typing import List
 
 import psycopg2
@@ -92,6 +93,16 @@ def get_user_ips(steamid64: int) -> List[str]:
         ips.append(ip)
     cur.close()
     return ips
+
+
+def get_all_user_ips() -> defaultdict:
+    cur = CONN.cursor()
+    cur.execute("SELECT * FROM user_ip")
+    user_ips = defaultdict(set)
+    for r in cur:
+        user_ips[r["ipv4"]].add(int(r["steamid64"]))
+    cur.close()
+    return user_ips
 
 
 def get_ip_users(ip: str) -> List[int]:
