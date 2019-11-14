@@ -139,7 +139,7 @@ def insert_user_ip(ip: str, steamid64: int):
         "INSERT INTO user_ip (steamid64, ipv4) VALUES "
         "    ( (%s), (SELECT steamid64 FROM steam_user WHERE steam_user.steamid64=(%s)) ),"
         "    ( (%s), (SELECT ipv4      FROM ip   WHERE ip.ipv4=(%s)) )",
-        (steamid64, ip, steamid64, ip)
+        (steamid64, steamid64, ip, ip)
     )
     CONN.commit()
     cur.close()
