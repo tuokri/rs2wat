@@ -110,7 +110,7 @@ def get_user_ips(steamid64: int) -> List[str]:
     for ip in cur:
         ips.append(ip)
     cur.close()
-    return ips
+    return [i[0] for i in ips]
 
 
 def get_all_user_ips() -> defaultdict:
@@ -132,7 +132,7 @@ def get_ip_users(ip: str) -> List[int]:
     for user in cur:
         users.append(user)
     cur.close()
-    return users
+    return [u[0] for u in users]
 
 
 def insert_user_ip(ip: str, steamid64: int):
