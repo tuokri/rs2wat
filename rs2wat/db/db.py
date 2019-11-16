@@ -139,7 +139,7 @@ def insert_user_ip(ip: str, steamid64: int):
     cur = CONN.cursor()
     cur.execute(
         "INSERT INTO user_ip (steamid64, ipv4) "
-        "SELECT subq.steamid64, subq.ipv4 FROM "
+        "SELECT steamid64, ipv4 FROM "
         "("
         "  (SELECT steamid64::text FROM steam_user WHERE steam_user.steamid64=(%s)) "
         "  UNION "
