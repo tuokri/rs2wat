@@ -114,7 +114,7 @@ def get_user_ips(steamid64: int) -> List[str]:
 
 
 def get_all_user_ips() -> defaultdict:
-    cur = CONN.cursor()
+    cur = CONN.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM user_ip")
     user_ips = defaultdict(set)
     for r in cur:
