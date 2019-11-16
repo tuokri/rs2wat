@@ -172,7 +172,7 @@ class FTPCollector(object):
         self._cwd(path)
         listings = []
         self._ftp.dir("", listings.append)
-        print(f"found {len(listings)} listings")
+        logger.info("found {amount} listings", amount=len(listings))
         listings = "\n".join(listings)
 
         matches = re.finditer(DIR_LISTING_PAT, listings)
@@ -190,11 +190,12 @@ class FTPCollector(object):
                 fname = g[2]
 
                 if (timestamp < older_than) and (fnmatch.fnmatch(fname, filename_pattern)):
-                    print(f"removing {fname}, with modified time: {timestamp}")
+                    logger.info("removing {fname}, with modified time: {timestamp}",
+                                fname=fname, timestamp=timestamp)
                     self._ftp.delete(fname)
 
             except Exception as e:
-                print(f"error: {e}, skipping: {m}")
+                logger.error("error: {e}, skipping: {m}", e=e, m=m)
 
     def get_new_modifications(self, path) -> Sequence[AnyStr]:
         """
@@ -219,9 +220,9 @@ class FTPCollector(object):
             try:
                 self._insert_log_cache(path, log_open_time, bookmark_row_idx)
             except Exception as e:
-                # logger.error
-                print("error saving new logfile to db: {path}: {e},"
-                      "current modifications: {m}".format(path=path, e=e, m=self._modifications))
+                logger.error(
+                    "error saving new logfile to db: {path}: {e},"
+                    "current modifications: {m}", path=path, e=e, m=self._modifications)
                 raise
         else:
             logger.info("logfile: {path} is cached, bookmark: {bmi}", path=path, bmi=bookmark_row_idx)

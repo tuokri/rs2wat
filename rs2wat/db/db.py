@@ -29,8 +29,10 @@ def insert_log_cache(path: str, open_time: datetime.datetime, bookmark: int):
 def update_log_cache(path: str, open_time: datetime.datetime, bookmark: int):
     cur = CONN.cursor()
     cur.execute(
-        "UPDATE log_cache SET open_time=(%s), bookmark=(%s) "
-        "WHERE path=(%s)", (open_time, bookmark, path))
+        "UPDATE log_cache "
+        "SET bookmark=(%s) "
+        "WHERE path=(%s) AND open_time=(%s)",
+        (bookmark, path, open_time))
     CONN.commit()
     cur.close()
 
@@ -137,12 +139,10 @@ def insert_user_ip(ip: str, steamid64: int):
     cur = CONN.cursor()
     cur.execute(
         "INSERT INTO user_ip (steamid64, ipv4) "
-        "(SELECT steamid64, ipv4 FROM "
-        "("
-        "    SELECT steamid64 FROM steam_user WHERE steam_user.steamid64=(%s), "
-        "    SELECT ipv4      FROM ip   WHERE ip.ipv4=(%s)"
-        ")"
-        ")",
+        "SELECT steamid64, ipv4 FROM "
+        "(SELECT steamid64 FROM steam_user WHERE steam_user.steamid64=(%s))"
+        "UNION"
+        "(SELECT ipv4 FROM ip WHERE ip.ipv4=(%s))",
         (steamid64, ip)
     )
     CONN.commit()
