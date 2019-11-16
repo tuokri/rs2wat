@@ -141,7 +141,7 @@ def insert_user_ip(ip: str, steamid64: int):
         "INSERT INTO user_ip (steamid64, ipv4) "
         "SELECT subq.steamid64, subq.ipv4 FROM "
         "("
-        "  (SELECT steamid64 FROM steam_user WHERE steam_user.steamid64=(%s)) "
+        "  (SELECT steamid64::text FROM steam_user WHERE steam_user.steamid64=(%s)) "
         "  UNION "
         "  (SELECT ipv4 FROM ip WHERE ip.ipv4=(%s)) "
         ") AS subq",
