@@ -17,7 +17,7 @@ from rs2wat import db
 
 DIR_LISTING_PAT = r"([0-9]{2}-[0-9]{2}-[0-9]{2}\s{2}[0-9]{2}:[0-9]{2}\w{2})\s*(\d*) (.*)"
 DIR_LISTING_TIME_FMT = "%m-%d-%y  %I:%M%p"
-RS2_LOG_DATE_FMT = "%d/%m/%y %H:%M:%S"
+RS2_LOG_DATE_FMT = "%m/%d/%y %H:%M:%S"
 
 StreamHandler(sys.stdout, level=logging.INFO).push_application()
 logger = Logger(__name__)
