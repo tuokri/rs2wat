@@ -2,7 +2,6 @@ import datetime
 import fnmatch
 import ftplib
 import io
-import logging
 import os
 import re
 import sys
@@ -19,7 +18,7 @@ DIR_LISTING_PAT = r"([0-9]{2}-[0-9]{2}-[0-9]{2}\s{2}[0-9]{2}:[0-9]{2}\w{2})\s*(\
 DIR_LISTING_TIME_FMT = "%m-%d-%y  %I:%M%p"
 RS2_LOG_DATE_FMT = "%m/%d/%y %H:%M:%S"
 
-StreamHandler(sys.stdout, level=logging.INFO).push_application()
+StreamHandler(sys.stdout, level="INFO").push_application()
 logger = Logger(__name__)
 
 
