@@ -104,7 +104,7 @@ def get_user(steamid64: int) -> int:
 def get_user_ips(steamid64: int) -> List[str]:
     cur = CONN.cursor()
     cur.execute(
-        "SELECT * FROM user_ip "
+        "SELECT ipv4 FROM user_ip "
         "WHERE steamid64=(%s)", (steamid64,))
     ips = []
     for ip in cur:
@@ -126,7 +126,7 @@ def get_all_user_ips() -> defaultdict:
 def get_ip_users(ip: str) -> List[int]:
     cur = CONN.cursor()
     cur.execute(
-        "SELECT * FROM user_ip "
+        "SELECT steamid64 FROM user_ip "
         "WHERE ipv4=(%s)", (ip,))
     users = []
     for user in cur:
